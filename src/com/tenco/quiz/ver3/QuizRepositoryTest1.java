@@ -1,4 +1,4 @@
-package ver2;
+package com.tenco.quiz.ver3;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,7 +22,7 @@ public class QuizRepositoryTest1 {
 			Scanner sc = new Scanner(System.in);
 			// 한 줄 출력됨.
 			QuizDTO dto = quizRepositoryImpl.playquizGame();
-			//System.out.println(dto); // 주소값이 담겨서 출력됨.
+			// System.out.println(dto); // 주소값이 담겨서 출력됨.
 
 			System.out.println(dto.getQuestion());
 			String userInput = sc.nextLine();

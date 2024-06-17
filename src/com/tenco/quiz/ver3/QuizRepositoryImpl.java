@@ -1,4 +1,6 @@
-package ver2;
+package com.tenco.quiz.ver3;
+
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

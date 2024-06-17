@@ -1,31 +1,27 @@
-package ver1;
+package com.tenco.quiz.ver3;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import com.tenco.quiz.DBConnectionManager;
-
-public class QuizGame {
-
-	private static final String ADD_QUIZ = " insert into quiz(question, answer) values(?, ?) ";
-	private static final String VIEW_QUIZ = " select * from quiz ";
-	private static final String RANDOM_QUIZ = " select * from quiz order by rand() limit 1 ";
+public class QuizGame2 {
 
 	public static void main(String[] args) {
 
-		// Define.UPDATE_QUIZ1; => 수정된 코드를 여기 클래스에서 묶어서 조작할 수 있음.
-
-		try (Connection conn = DBConnectionManager.getConnection(); 
+		try (Connection conn = DBConnectionManager.getConnection();
 				Scanner scanner = new Scanner(System.in)) {
 
 			// CRUD
 			while (true) {
-				printMenu(); // while문 -> ctrl + 1 눌러서 메서드 생성 후
-				// 메서드명 바꾸면 밑에도 메서드 생성되고 메서드명이 변경되어있음
+				System.out.println();
+				System.out.println("------------------------------------");
+				System.out.println("1. 퀴즈 문제 추가");
+				System.out.println("2. 퀴즈 문제 조회");
+				System.out.println("3. 퀴즈 게임 시작");
+				System.out.println("4. 종료");
+				System.out.print("옵션을 선택 하세요: ");
 
 				int choice = scanner.nextInt();
 				// while문 계속 돌지만 한 번 돌고 블로킹됨.
@@ -57,19 +53,9 @@ public class QuizGame {
 		}
 	}// end of main
 
-	private static void printMenu() {
-		System.out.println();
-		System.out.println("------------------------------------");
-		System.out.println("1. 퀴즈 문제 추가");
-		System.out.println("2. 퀴즈 문제 조회");
-		System.out.println("3. 퀴즈 게임 시작");
-		System.out.println("4. 종료");
-		System.out.print("옵션을 선택 하세요: ");
-	}
-
 	private static void playquizGame(Connection conn, Scanner scanner) {
-
-		try (PreparedStatement pstmt = conn.prepareStatement(RANDOM_QUIZ);) {
+		String sql = " select * from quiz order by rand() limit 1 ";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
 			ResultSet rs = pstmt.executeQuery(); // select 구문이라 ResultSet 데이터 타입
 
 			// 방어적 코드
@@ -98,7 +84,8 @@ public class QuizGame {
 	}
 
 	private static void viewQuizQuestion(Connection conn) {
-		try (PreparedStatement pstmt = conn.prepareStatement(VIEW_QUIZ)) { // 자원 열고 닫기
+		String sql = " select * from quiz ";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) { // 자원 열고 닫기
 			ResultSet resultSet = pstmt.executeQuery();
 			while (resultSet.next()) { // next(): 다음 요소가 있는지 없는지 true, false 반환
 				System.out.println("문제 ID : " + resultSet.getInt("id")); // 키 값 = id
@@ -120,7 +107,8 @@ public class QuizGame {
 		System.out.println("퀴즈 정답을 입력하세요: ");
 		String answer = scanner.nextLine();
 
-		try (PreparedStatement pstmt = conn.prepareStatement(ADD_QUIZ)) {
+		String sql = " insert into quiz(question, answer) values(?, ?) ";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, question);
 			pstmt.setString(2, answer);
 			int rowsInsertedCount = pstmt.executeUpdate();

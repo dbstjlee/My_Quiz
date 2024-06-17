@@ -1,4 +1,4 @@
-package ver2;
+package com.tenco.quiz.ver3;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
